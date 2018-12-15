@@ -1,7 +1,7 @@
 /*
  * server.h - Define shadowsocks server's buffers and callbacks
  *
- * Copyright (C) 2013 - 2017, Max Lv <max.c.lv@gmail.com>
+ * Copyright (C) 2013 - 2018, Max Lv <max.c.lv@gmail.com>
  *
  * This file is part of the shadowsocks-libev.
  *
@@ -40,6 +40,7 @@ struct manager_ctx {
     ev_io io;
     int fd;
     int fast_open;
+    int no_delay;
     int reuse_port;
     int verbose;
     int mode;
@@ -55,8 +56,7 @@ struct manager_ctx {
     char *manager_address;
     char **hosts;
     int host_num;
-    char **nameservers;
-    int nameserver_num;
+    char *nameservers;
     int mtu;
     int ipv6first;
 #ifdef HAVE_SETRLIMIT
@@ -68,18 +68,12 @@ struct server {
     char port[8];
     char password[128];
     char fast_open[8];
+    char no_delay[8];
     char *mode;
     char *method;
     char *plugin;
     char *plugin_opts;
     uint64_t traffic;
 };
-
-typedef struct sock_lock {
-    char *port;
-    int *fds;
-    int fd_count;
-    ev_timer watcher;
-} sock_lock_t;
 
 #endif // _MANAGER_H
